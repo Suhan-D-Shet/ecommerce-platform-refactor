@@ -3,9 +3,10 @@ import time
 import json
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
+from app.utils import decode_token
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from app.utils import decode_token
+from app.logger import logger
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     """Middleware to log all requests with user_id, endpoint, timestamp, and status"""
@@ -17,8 +18,13 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         user_id = None
         auth_header = request.headers.get("Authorization", "")
         if auth_header.startswith("Bearer "):
-            # In a production app, you'd decode the token here
-            pass
+            try:
+                token = auth_header.split(" ")[1]
+                payload = decode_token(token)
+                if payload:
+                    user_id = payload.get("sub")
+            except Exception:
+                pass
         
         # Call the next middleware/endpoint
         response = await call_next(request)

@@ -1,21 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-import logging
+from app.logger import logger
 
 from app.routers import auth, products, categories, cart, orders, reviews, coupons, shipping
-from middleware import LoggingMiddleware
-from database import engine, Base
-
-# Create database tables
-Base.metadata.create_all(bind=engine)
+from app.middleware import LoggingMiddleware
+from app.database import engine, Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan context manager for startup/shutdown events"""
-    logging.info("Application startup")
+    logger.info("Application startup")
+    # Create database tables
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        logger.warning(f"Could not create tables: {e}")
     yield
-    logging.info("Application shutdown")
+    logger.info("Application shutdown")
 
 app = FastAPI(
     title="E-Commerce API",

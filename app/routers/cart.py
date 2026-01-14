@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Header, Query
 from sqlalchemy.orm import Session
 from typing import Optional
+from datetime import datetime
 
 from app.database import get_db
-from app.models import CartItem, Product, User
-from app.schemas import CartItemCreate, CartItemUpdate, CartResponse, CartItemResponse
+from app.models import CartItem, Product, User, Coupon
+from app.schemas import CartItemCreate, CartItemUpdate, CartResponse, CartItemResponse, CartCouponRequest, CartCouponResponse
 from app.routers.auth import get_current_user_from_header
 
 router = APIRouter(prefix="/cart", tags=["Cart"])
@@ -149,3 +150,78 @@ def clear_cart(
     
     db.query(CartItem).filter(CartItem.user_id == user_id).delete()
     db.commit()
+
+@router.post("/apply-coupon", response_model=CartCouponResponse)
+def apply_coupon(
+    request: CartCouponRequest,
+    authorization: Optional[str] = Header(None),
+    db: Session = Depends(get_db)
+):
+    """Apply a coupon to the cart and calculate discount"""
+    user = get_current_user_from_header(authorization, db)
+    
+    # Verify request user_id matches authenticated user
+    if user.id != request.user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to apply coupon for this user"
+        )
+    
+    # Get cart items
+    cart_items = db.query(CartItem).filter(CartItem.user_id == user.id).all()
+    
+    if not cart_items:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cart is empty"
+        )
+    
+    # Calculate subtotal
+    subtotal = sum(item.product.price * item.quantity for item in cart_items)
+    
+    # Find coupon
+    coupon = db.query(Coupon).filter(Coupon.code == request.coupon_code).first()
+    
+    if not coupon:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Coupon not found"
+        )
+    
+    if not coupon.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Coupon is inactive"
+        )
+    
+    if coupon.expiry_date and coupon.expiry_date < datetime.utcnow():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Coupon has expired"
+        )
+    
+    if coupon.max_uses and coupon.current_uses >= coupon.max_uses:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Coupon usage limit reached"
+        )
+    
+    # Calculate discount
+    discount = 0.0
+    if coupon.discount_percentage:
+        discount = subtotal * (coupon.discount_percentage / 100)
+    elif coupon.discount_amount:
+        discount = coupon.discount_amount
+        
+    # Ensure discount doesn't exceed subtotal
+    if discount > subtotal:
+        discount = subtotal
+        
+    new_total = subtotal - discount
+    
+    return {
+        "message": "Coupon applied",
+        "subtotal": subtotal,
+        "discount": discount,
+        "new_total": new_total
+    }

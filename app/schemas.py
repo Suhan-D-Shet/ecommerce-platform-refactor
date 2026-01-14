@@ -93,6 +93,16 @@ class CartResponse(BaseModel):
     items: List[CartItemResponse]
     total: float
 
+class CartCouponRequest(BaseModel):
+    user_id: int
+    coupon_code: str
+
+class CartCouponResponse(BaseModel):
+    message: str
+    subtotal: float
+    discount: float
+    new_total: float
+
 # Review Schemas
 class ReviewCreate(BaseModel):
     rating: int = Field(..., ge=1, le=5)

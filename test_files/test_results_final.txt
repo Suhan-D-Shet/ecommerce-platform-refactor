@@ -1,0 +1,98 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-9.0.2, pluggy-1.6.0 -- E:\Coding\Manipal Dot Net\EcommerceFresh\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: E:\Coding\Manipal Dot Net\EcommerceFresh
+plugins: anyio-4.12.1
+collecting ... collected 10 items
+
+tests/test_main.py::test_health_check PASSED                             [ 10%]
+tests/test_main.py::test_register_user PASSED                            [ 20%]
+tests/test_main.py::test_login_user PASSED                               [ 30%]
+tests/test_main.py::test_create_category PASSED                          [ 40%]
+tests/test_main.py::test_create_product PASSED                           [ 50%]
+tests/test_main.py::test_coupon_flow PASSED                              [ 60%]
+tests/test_main.py::test_apply_invalid_coupon PASSED                     [ 70%]
+tests/test_main.py::test_reviews_flow PASSED                             [ 80%]
+tests/test_main.py::test_checkout_and_orders PASSED                      [ 90%]
+tests/test_main.py::test_shipping_calculation PASSED                     [100%]
+
+============================== warnings summary ===============================
+app\database.py:8
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\database.py:8: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+app\schemas.py:16
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UserResponse(BaseModel):
+
+app\schemas.py:35
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:35: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CategoryResponse(BaseModel):
+
+app\schemas.py:61
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:61: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ProductResponse(BaseModel):
+
+app\schemas.py:83
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:83: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CartItemResponse(BaseModel):
+
+app\schemas.py:111
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:111: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ReviewResponse(BaseModel):
+
+app\schemas.py:123
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:123: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class OrderItemResponse(BaseModel):
+
+app\schemas.py:143
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:143: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class OrderResponse(BaseModel):
+
+app\schemas.py:166
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\schemas.py:166: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CouponResponse(BaseModel):
+
+tests/test_main.py: 23 warnings
+  E:\Coding\Manipal Dot Net\EcommerceFresh\venv\Lib\site-packages\sqlalchemy\sql\schema.py:3624: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return util.wrap_callable(lambda ctx: fn(), fn)  # type: ignore
+
+tests/test_main.py::test_register_user
+tests/test_main.py::test_login_user
+tests/test_main.py::test_create_category
+tests/test_main.py::test_coupon_flow
+tests/test_main.py::test_apply_invalid_coupon
+tests/test_main.py::test_reviews_flow
+tests/test_main.py::test_checkout_and_orders
+tests/test_main.py::test_checkout_and_orders
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\utils.py:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expire = datetime.utcnow() + expires_delta
+
+tests/test_main.py::test_register_user
+tests/test_main.py::test_checkout_and_orders
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\routers\auth.py:49: PydanticDeprecatedSince20: The `from_orm` method is deprecated; set `model_config['from_attributes']=True` and use `model_validate` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    "user": UserResponse.from_orm(db_user)
+
+tests/test_main.py::test_login_user
+tests/test_main.py::test_create_category
+tests/test_main.py::test_coupon_flow
+tests/test_main.py::test_apply_invalid_coupon
+tests/test_main.py::test_reviews_flow
+tests/test_main.py::test_checkout_and_orders
+  E:\Coding\Manipal Dot Net\EcommerceFresh\app\routers\auth.py:74: PydanticDeprecatedSince20: The `from_orm` method is deprecated; set `model_config['from_attributes']=True` and use `model_validate` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    "user": UserResponse.from_orm(user)
+
+tests/test_main.py::test_login_user
+  E:\Coding\Manipal Dot Net\EcommerceFresh\venv\Lib\site-packages\_pytest\python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but tests/test_main.py::test_login_user returned <class 'str'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/test_main.py::test_create_product
+  E:\Coding\Manipal Dot Net\EcommerceFresh\venv\Lib\site-packages\_pytest\python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but tests/test_main.py::test_create_product returned <class 'int'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 10 passed, 50 warnings in 2.76s =======================

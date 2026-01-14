@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Header
 from sqlalchemy.orm import Session
 from datetime import timedelta
 
@@ -74,36 +74,8 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
         "user": UserResponse.from_orm(user)
     }
 
-@router.get("/me", response_model=UserResponse)
-def get_current_user(token: str = None, db: Session = Depends(get_db)):
-    """Get current user from token"""
-    # In a real app, extract token from Authorization header
-    if not token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated"
-        )
-    
-    payload = decode_token(token)
-    if not payload:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token"
-        )
-    
-    user_id = payload.get("sub")
-    user = db.query(User).filter(User.id == int(user_id)).first()
-    
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    
-    return UserResponse.from_orm(user)
-
 def get_current_user_from_header(
-    authorization: str = None,
+    authorization: str = Header(None),
     db: Session = Depends(get_db)
 ) -> User:
     """Dependency to get current user from Authorization header"""
@@ -143,3 +115,8 @@ def get_current_user_from_header(
         )
     
     return user
+
+@router.get("/me", response_model=UserResponse)
+def read_users_me(current_user: User = Depends(get_current_user_from_header)):
+    """Get current user from token"""
+    return current_user
