@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 from typing import Optional
 from datetime import datetime
 
-from database import get_db
-from models import Coupon
-from schemas import CouponCreate, CouponResponse
-from routers.auth import get_current_user_from_header
+from app.database import get_db
+from app.models import Coupon
+from app.schemas import CouponCreate, CouponResponse
+from app.routers.auth import get_current_user_from_header
 
 router = APIRouter(prefix="/coupons", tags=["Coupons"])
 

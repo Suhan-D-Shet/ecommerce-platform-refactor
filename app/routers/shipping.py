@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
-from schemas import ShippingCalculateRequest, ShippingCalculateResponse
+from app.schemas import ShippingCalculateRequest, ShippingCalculateResponse
 
 router = APIRouter(prefix="/shipping", tags=["Shipping"])
 

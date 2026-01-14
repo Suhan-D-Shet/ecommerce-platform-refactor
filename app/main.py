@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import logging
 
-from routers import auth, products, categories, cart, orders, reviews, coupons, shipping
+from app.routers import auth, products, categories, cart, orders, reviews, coupons, shipping
 from middleware import LoggingMiddleware
 from database import engine, Base
 

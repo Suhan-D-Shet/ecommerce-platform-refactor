@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException, status, Depends, Header, Query
 from sqlalchemy.orm import Session
 from typing import Optional, List
 
-from database import get_db
-from models import Order, OrderItem, CartItem, Product, User, Coupon, OrderStatus
-from schemas import OrderCreate, OrderResponse, OrderStatusEnum
-from routers.auth import get_current_user_from_header
+from app.database import get_db
+from app.models import Order, OrderItem, CartItem, Product, User, Coupon, OrderStatus
+from app.schemas import OrderCreate, OrderResponse, OrderStatusEnum
+from app.routers.auth import get_current_user_from_header
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 

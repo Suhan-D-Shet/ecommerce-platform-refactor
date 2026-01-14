@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException, status, Depends, Header
 from sqlalchemy.orm import Session
 from typing import Optional
 
-from database import get_db
-from models import Review, Product, User
-from schemas import ReviewCreate, ReviewResponse
-from routers.auth import get_current_user_from_header
+from app.database import get_db
+from app.models import Review, Product, User
+from app.schemas import ReviewCreate, ReviewResponse
+from app.routers.auth import get_current_user_from_header
 
 router = APIRouter(prefix="/products", tags=["Reviews"])
 
